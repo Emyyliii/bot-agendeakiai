@@ -1,0 +1,126 @@
+{
+  "executado_em": "2026-09-20T22:16:51.351559+00:00",
+  "prompt": "agendeakiai-agente-v1",
+  "modelo": "mock-agendeakiai-v1",
+  "entrada": {
+    "cliente_id": "cliente-inexistente",
+    "mensagem": "Quero um corte profissional para entrevista em Moema até R$ 100.",
+    "confirmacao_explicita": false
+  },
+  "estado_final": {
+    "passos": 3,
+    "tokens_entrada": 420,
+    "tokens_saida": 74,
+    "custo_usd": 0.0,
+    "motivo_terminacao": "resposta_final",
+    "resposta": "Não consegui consultar seu histórico, então usei apenas o pedido atual. Melhor opção: opc-003: Corte executivo com Diego no Corte & Cia, Moema, por R$ 75.00. Nenhum agendamento foi realizado."
+  },
+  "trajetoria": [
+    {
+      "tipo": "modelo",
+      "passo": 1,
+      "modelo": "mock-agendeakiai-v1",
+      "tool_calls": [
+        {
+          "id": "mock-consultar_historico",
+          "name": "consultar_historico",
+          "arguments": {}
+        }
+      ],
+      "resposta": null,
+      "tokens_entrada": 120,
+      "tokens_saida": 12
+    },
+    {
+      "tipo": "ferramenta",
+      "passo": 1,
+      "ferramenta": "consultar_historico",
+      "argumentos": {},
+      "resultado": {
+        "ok": false,
+        "erro": {
+          "codigo": "CLIENTE_NAO_ENCONTRADO",
+          "mensagem": "Cliente 'cliente-inexistente' não existe no mock."
+        },
+        "como_continuar": "Continue sem personalização e use somente o pedido atual."
+      },
+      "erro": true
+    },
+    {
+      "tipo": "modelo",
+      "passo": 2,
+      "modelo": "mock-agendeakiai-v1",
+      "tool_calls": [
+        {
+          "id": "mock-buscar_opcoes",
+          "name": "buscar_opcoes",
+          "arguments": {
+            "servico": "corte",
+            "bairro": "Moema",
+            "orcamento_max": 100.0
+          }
+        }
+      ],
+      "resposta": null,
+      "tokens_entrada": 120,
+      "tokens_saida": 15
+    },
+    {
+      "tipo": "ferramenta",
+      "passo": 2,
+      "ferramenta": "buscar_opcoes",
+      "argumentos": {
+        "servico": "corte",
+        "bairro": "Moema",
+        "orcamento_max": 100.0
+      },
+      "resultado": {
+        "ok": true,
+        "opcoes": [
+          {
+            "opcaoId": "opc-003",
+            "idUnidade": 103,
+            "idServico": 203,
+            "idFuncionario": 303,
+            "salao": "Corte & Cia",
+            "bairro": "Moema",
+            "servico": "Corte executivo",
+            "profissional": "Diego",
+            "dataHoraInicio": "2027-11-22T09:00:00-03:00",
+            "preco": 75.0,
+            "ocasioes": [
+              "entrevista",
+              "trabalho"
+            ],
+            "estilos": [
+              "profissional",
+              "discreto"
+            ],
+            "clima": [
+              "quente",
+              "frio"
+            ]
+          }
+        ]
+      },
+      "erro": false
+    },
+    {
+      "tipo": "modelo",
+      "passo": 3,
+      "modelo": "mock-agendeakiai-v1",
+      "tool_calls": [],
+      "resposta": "Não consegui consultar seu histórico, então usei apenas o pedido atual. Melhor opção: opc-003: Corte executivo com Diego no Corte & Cia, Moema, por R$ 75.00. Nenhum agendamento foi realizado.",
+      "tokens_entrada": 180,
+      "tokens_saida": 47
+    },
+    {
+      "tipo": "terminacao",
+      "motivo": "resposta_final",
+      "passos": 3,
+      "tokens_total": 494,
+      "custo_usd": 0.0
+    }
+  ],
+  "caso": "cliente inexistente"
+}

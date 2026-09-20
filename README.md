@@ -115,11 +115,11 @@ A arquitetura evoluirá para uma solução mais robusta em etapas posteriores, i
 - `prompts/`: prompt versionado;
 - `dados/`: catálogo e clientes simulados;
 - `logs/`: trajetórias geradas pela demonstração;
-- `docs/`: case, análise dos modelos e arquitetura.
+- `docs/`: case, análise dos modelos, fontes e protocolo de medição.
 
 ## Status do projeto
 
-A prova de conceito do item 4 está implementada com uma API mock. A próxima etapa será substituir a camada HTTP mock pelos endpoints do `monorepo-agendeaki`.
+A prova de conceito do item 4 está implementada com uma API mock. Os quatro cenários demonstrados passam no verificador (`4/4`). A próxima etapa será substituir a camada HTTP mock pelos endpoints do `monorepo-agendeaki`.
 
 ## Como rodar
 
@@ -185,7 +185,7 @@ python -m src.main --mock --cliente-id cliente-001 \
   --message "Quero penteado clássico para casamento no Centro até R$ 150"
 ```
 
-Saída:
+Saída real da demonstração (caso de divergência):
 
 ```text
 Sua preferência atual foi priorizada sobre o histórico. Melhor opção: opc-001: Penteado clássico com Bianca no Studio Aurora, Centro, por R$ 120.00. Nenhum agendamento foi realizado.
@@ -202,21 +202,19 @@ Internamente, o fluxo é:
 
 O agente não inventa disponibilidade, não consulta dados reais nesta versão e não agenda sem confirmação. Se o cliente ou a opção não existir, o erro da ferramenta volta ao modelo com uma orientação para continuar com segurança.
 
-## Critério de sucesso
+## Critério de sucesso da POC
 
 O agente será considerado útil quando puder:
 
-- entender corretamente a ocasião e a intenção do cliente;
-- coletar apenas as informações que faltam;
-- recomendar serviços e profissionais adequados ao evento;
-- levar em conta clima, orçamento, local e estilo;
-- sugerir opções de forma clara e objetiva;
-- reduzir a fricção do processo de agendamento.
+- aprovar os 4 de 4 cenários em `python -m src.verificar`;
+- não registrar agendamento em nenhum dos 3 cenários sem confirmação;
+- continuar respondendo quando o histórico do cliente não existir.
 
 ## Documentação principal
 
 - [docs/case.md](docs/case.md)
 - [docs/modelos.md](docs/modelos.md)
+- [docs/medicao-baseline.md](docs/medicao-baseline.md)
 
 ## Observação
 
