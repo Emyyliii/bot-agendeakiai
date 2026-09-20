@@ -7,7 +7,6 @@ import json
 import os
 import re
 import sys
-import time
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -76,7 +75,6 @@ TOOL_DEFINITIONS = [
 class Budget:
     max_steps: int = 6
     max_total_tokens: int = 4000
-    max_seconds: float = 120.0
     max_cost_usd: float = 0.01
     input_usd_per_million: float = 0.0
     output_usd_per_million: float = 0.0
@@ -91,7 +89,6 @@ class AgentState:
     tokens_entrada: int = 0
     tokens_saida: int = 0
     custo_usd: float = 0.0
-    inicio: float = field(default_factory=time.monotonic)
     historico: dict[str, Any] | None = None
     opcoes: list[dict[str, Any]] = field(default_factory=list)
     agendamento: dict[str, Any] | None = None
@@ -405,8 +402,6 @@ class Agent:
             return "limite_passos"
         if state.tokens_entrada + state.tokens_saida >= self.budget.max_total_tokens:
             return "limite_tokens"
-        if time.monotonic() - state.inicio >= self.budget.max_seconds:
-            return "limite_tempo"
         if state.custo_usd >= self.budget.max_cost_usd:
             return "limite_custo"
         return None
