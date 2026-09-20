@@ -2,7 +2,7 @@
 
 ## Decisão
 
-Esta primeira versão usa exclusivamente o **Mistral Small**, pelo alias `mistral-small-latest`. A decisão privilegia uma prova de conceito barata, com chamadas curtas e compatibilidade direta com o código Python exigido pela disciplina.
+Esta primeira versão usa exclusivamente o **Mistral Small**, pelo identificador disponível na conta `mistral-small-2603`. A decisão privilegia uma prova de conceito barata, com chamadas curtas e compatibilidade direta com o código Python exigido pela disciplina.
 
 O projeto usa a biblioteca `openai` apenas como cliente compatível de Chat Completions; ela aponta para `LLM_BASE_URL=https://api.mistral.ai/v1`. Isso não envia chamadas para outro provedor. A chave configurada em `OPENAI_API_KEY` é a chave da Mistral, mantida fora do Git no `.env`.
 

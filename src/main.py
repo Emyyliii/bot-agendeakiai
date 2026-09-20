@@ -421,7 +421,7 @@ def build_agent(cliente_id: str, use_mock: bool = False, api_url: str = DEFAULT_
         model = OpenAIChatModel(
             base_url=os.getenv("LLM_BASE_URL", "https://api.mistral.ai/v1"),
             api_key=os.getenv("OPENAI_API_KEY", ""),
-            model=os.getenv("LLM_MODELO", "mistral-small-latest"),
+            model=os.getenv("LLM_MODELO", "mistral-small-2603"),
         )
         # Preços do Mistral Small em 13/09/2026. O teto de US$ 0,01 evita
         # uma execução descontrolada; revise estes valores se trocar o modelo.

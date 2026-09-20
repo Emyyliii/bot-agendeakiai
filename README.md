@@ -137,7 +137,7 @@ O `.env` possui somente as três configurações do modelo:
 ```env
 OPENAI_API_KEY=sua_chave_da_mistral
 LLM_BASE_URL=https://api.mistral.ai/v1
-LLM_MODELO=mistral-small-latest
+LLM_MODELO=mistral-small-2603
 ```
 
 Para uma demonstração totalmente local e sem consumir a API da Mistral:
