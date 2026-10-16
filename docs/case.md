@@ -38,30 +38,30 @@ O cliente normalmente não informa todos os filtros na primeira mensagem. O agen
 
 ## Workflow
 
-1. **ENTRADA** — recebe a mensagem e o identificador do cliente. **[decide: CÓDIGO]**
-2. **ENTENDIMENTO** — interpreta ocasião, serviço, estilo, bairro e orçamento; pede o dado mínimo que falta. **[decide: MODELO]**
-3. **HISTÓRICO** — consulta preferências e reservas anteriores. Se não existir, registra o erro e continua sem personalização. **[decide: CÓDIGO]**
-4. **BUSCA** — consulta catálogo e agenda usando filtros disponíveis. **[decide: CÓDIGO]**
-5. **RECOMENDAÇÃO** — compara as opções retornadas e explica a melhor alternativa; o pedido atual tem prioridade sobre o histórico. **[decide: MODELO]**
-6. **CONFIRMAÇÃO** — apresenta a opção e espera autorização explícita do cliente. **[decide: CÓDIGO]**
-7. **AGENDAMENTO** — grava a reserva somente após confirmação. **[ESCRITA — irreversível nesta POC; confirma: cliente final] [decide: CÓDIGO]**
-8. **RETORNO/ESCALONAMENTO** — mostra o resultado ou orienta a Operação quando não for possível resolver. **[decide: CÓDIGO]**
+1. **ENTRADA** — recebe texto livre, identificador do cliente e da conversa. **[decide: CÓDIGO]**
+2. **CONTEXTO** — consulta histórico e memória; se o cliente não existir, registra o erro e segue sem personalização. **[decide: CÓDIGO]**
+3. **RECUPERAÇÃO** — encaminha a pergunta às regras Markdown ou consulta catálogo e agenda estruturados. **[decide: CÓDIGO]**
+4. **ESCLARECIMENTO/RESPOSTA** — pergunta o serviço que falta, desambigua bairro, recusa regra ausente ou mostra opções. **[decide: CÓDIGO; redação Mistral opcional]**
+5. **APROVAÇÃO** — antes de escrever, apresenta serviço, profissional, horário, preço e alternativas; espera decisão do cliente final. **[interrupt; 15 min]**
+6. **AGENDAMENTO** — grava a reserva após aprovação, usando chave idempotente. **[ESCRITA — somente após aprovação] [decide: CÓDIGO]**
+7. **TÉRMINO** — registra o motivo, resposta e episódio curto. **[decide: CÓDIGO]**
 
 ## Sistema e autonomia
 
-O sistema interpreta uma necessidade expressa em linguagem natural, consulta o histórico e o catálogo por HTTP, recomenda opções reais retornadas pela API mock e só grava uma reserva com confirmação explícita. Ele não inventa horários, preços ou regras.
+O sistema interpreta por regras simples uma necessidade expressa em linguagem natural, consulta histórico e catálogo por HTTP, pesquisa regras em Markdown e só grava uma reserva após aprovação explícita e retomada do grafo. Não inventa horários, preços ou regras.
 
-O nível é **agente limitado**: um roteador ou formulário resolve consultas fixas, mas não decide em tempo de execução quais filtros faltam, como interpretar uma ocasião e como explicar uma flexibilização quando não há correspondência exata. A autonomia é limitada porque consultas, autorização e escrita continuam sob controle do código e do cliente.
+O nível implementado é **workflow com router**: o catálogo e as rotas são conhecidos e as lacunas são resolvidas com perguntas fixas. A redação Mistral é opcional; no mock, as decisões continuam no código. Não há justificativa atual para um ciclo livre de ferramentas ou para autonomia do modelo sobre regras e escrita.
 
 | Ferramenta | O que faz | Leitura ou escrita? | Reversível? | Contra o que conversa |
 |---|---|---|---|---|
 | `consultar_historico` | Retorna preferências e agendamentos do cliente | Leitura | Sim | API HTTP mock do AgendeAki |
 | `buscar_opcoes` | Retorna opções por serviço, bairro e orçamento | Leitura | Sim | API HTTP mock do AgendeAki |
-| `confirmar_agendamento` | Registra a opção confirmada pelo cliente | Escrita | Não nesta POC | API HTTP mock do AgendeAki |
+| `buscar_regra` | Pesquisa trechos dos documentos Markdown vigentes | Leitura | Sim | `dados/corpus/` |
+| `confirmar_agendamento` | Registra a opção aprovada pelo cliente com chave idempotente | Escrita | Não nesta POC | API HTTP mock do AgendeAki |
 
 ## Justificativa de negócio
 
-O agente é justificado pela interpretação de pedidos incompletos e variados e pela decisão contextual de qual pergunta fazer ou qual alternativa apresentar; um filtro tradicional continua responsável por aplicar as restrições e gravar a reserva. Não é necessário dar ao modelo poder para escrever nem para decidir regras de negócio.
+O workflow reduz a repetição de filtros para o cliente e identifica o dado mínimo que falta. Um filtro tradicional continua aplicando restrições; a API mock grava a reserva apenas depois da aprovação. O modo Mistral não decide regras de negócio nem recebe poder de escrita.
 
 O ganho que será medido é **ações manuais para chegar a uma opção**. A linha de base ainda precisa ser coletada no frontend real do `monorepo-agendeaki`: dez pessoas (ou dez execuções guiadas) realizarão os mesmos cenários, registrando número de telas, filtros preenchidos e tempo. Não há medições reais no repositório ainda; portanto, não declaramos porcentagem de ganho como fato.
 
@@ -73,22 +73,32 @@ O modo mock custa US$ 0. Para o Mistral Small, a estimativa de tokens e custo es
 
 ## Verificador e sucesso
 
-O verificador construído é `src/verificar.py`. Ele lê os quatro cenários rotulados em `dados/casos-avaliacao.json` e confere, nos logs: escrita apenas no caso confirmado, erro `CLIENTE_NAO_ENCONTRADO` no cliente inexistente e trechos de resposta esperados. A execução é `python -m src.verificar` depois de `python -m src.demo`.
+O verificador construído é `src/verificar.py`. Ele confere os dez logs de `src/demo.py`: contrato de saída Pydantic, ausência de escrita fora da aprovação, erro de cliente inexistente, recusa sem suporte, aprovação editada/repetida e rejeição por expiração. A execução é `python -m src.verificar` depois de `python -m src.demo`.
 
-**Critério de sucesso desta POC:** os **4 de 4** cenários rotulados passam no verificador; em particular, **0 de 3** cenários sem confirmação pode registrar agendamento e o cenário de cliente inexistente deve terminar sem queda do programa.
+**Verificação observada em 2026-10-04:** os **10 de 10** logs passaram; nenhum cenário sem aprovação realizou escrita; a aprovação editada repetida manteve um único identificador; a aprovação expirada terminou sem reserva. A avaliação lexical das dez perguntas marcou **10/10 no alvo**. Os resultados testam a POC mock, não comportamento com clientes reais.
 
 ## Dados e privacidade
 
-Os dados são simulados e vivem em `dados/catalogo.json`. Para preservar dificuldade, incluem: divergência entre histórico “moderno” e pedido atual “clássico”; `cliente-inexistente`, que produz registro inexistente; e uma consulta explícita sem reserva, que não pode disparar a ação principal. Os quatro cenários estão nomeados em `dados/casos-avaliacao.json`.
+Os dados são simulados e vivem em `dados/catalogo.json`. Para preservar dificuldade, incluem: divergência entre histórico “moderno” e pedido atual “clássico”; `cliente-inexistente`; consulta sem reserva; e duas opções de penteado para possibilitar aprovação editada. Os casos estão em `src/demo.py` e seus logs em `logs/`.
 
 O domínio normalmente toca dados pessoais (nome, histórico e preferências). Nesta POC todos são fictícios. Dados reais não devem entrar no repositório nem no contexto do modelo; em produção, o identificador do cliente e o mínimo necessário devem ser buscados sob autenticação pela integração da plataforma.
 
-## Espaço para as próximas partes
+## Próximas evoluções
 
-- **RAG (Parte 2):** regras de cancelamento, serviços, políticas de cada salão e descrições de estilos, inicialmente em documentos Markdown/JSON.
-- **MCP (Parte 2):** a API HTTP mock de histórico, busca e agendamento será a candidata a servidor MCP quando a integração com o `monorepo-agendeaki` for feita.
-- **LangChain (Parte 2):** pode orquestrar recuperação de regras e ferramentas quando houver mais de uma fonte de conhecimento; não é necessário nesta POC.
-- **Multiagente (Parte 3):** um agente de recomendação e outro de operação poderiam ser separados apenas se as regras e a revisão humana crescerem; ainda não há justificativa para isso.
+- **MCP:** a API HTTP mock de histórico, busca e agendamento é candidata a servidor MCP na integração com `monorepo-agendeaki`; isso não faz parte desta implementação.
+- **Multiagente (Parte 3):** separar recomendação e operação somente se regras e revisão humana crescerem; ainda não há justificativa.
+
+## Complemento aprendido durante a consolidação
+
+Nesta POC, a palavra **opção** designa um conjunto já consultado de serviço, unidade, profissional, horário e preço. A recomendação só pode escolher entre essas opções; a aprovação humana mostra todos esses dados antes da escrita. Uma edição da aprovação pode trocar para outra opção da mesma consulta, e a API mock usa a mesma chave de idempotência se a aprovação for repetida.
+
+O catálogo é filtrado por nome de serviço, bairro e teto de preço. A frase “maquiagem natural”, por exemplo, nomeia um serviço e não é tratada automaticamente como preferência pessoal. Preferências semânticas só entram na memória quando o cliente as explicita com termos como “prefiro” ou “gosto”. O pedido atual ainda prevalece sobre histórico e memória.
+
+As regras de cancelamento em 48 horas e remarcação sem custo são regras simuladas desta POC. Duas exceções — cancelamento pelo salão e doença no dia — foram criadas exclusivamente para avaliar recuperação e citação. Não houve entrevista nem pesquisa com clientes reais, salões ou operação. A regra antiga de 24 horas está no corpus apenas como documento revogado e não pode fundamentar resposta.
+
+O agente não sabe responder sobre atraso, alergias, falta ou lembretes porque o corpus não contém orientação aprovada para esses assuntos. A lacuna produz uma recusa com orientação à operação. A busca por catálogo e por regras é lexical e pequena; ela não mede adequação estética de um serviço a uma ocasião.
+
+O checkpoint de conversa guarda o estado necessário para retomar uma aprovação. A memória JSON guarda somente episódios curtos e preferências declaradas. O corpus de regras é conhecimento estático e separado dos dados de conversa. O comando `python -m src.esquecer --cliente-id ID --confirmar` apaga as estruturas locais vinculadas ao cliente.
 
 ## Maior risco
 

@@ -1,41 +1,34 @@
 {
-  "executado_em": "2026-09-20T22:16:51.343641+00:00",
-  "prompt": "agendeakiai-agente-v1",
-  "modelo": "mock-agendeakiai-v1",
+  "caso": "caso simples com escrita confirmada",
   "entrada": {
+    "texto": "Quero um penteado clássico para casamento no Centro até R$ 150. Confirmo o agendamento da melhor opção encontrada.",
     "cliente_id": "cliente-001",
-    "mensagem": "Quero um penteado clássico para um casamento em clima quente, no Centro, até R$ 150. Confirmo o agendamento da melhor opção encontrada.",
-    "confirmacao_explicita": true
+    "conversa_id": "demo-01-caso-simples-1791156899830"
   },
-  "estado_final": {
-    "passos": 4,
-    "tokens_entrada": 540,
-    "tokens_saida": 63,
-    "custo_usd": 0.0,
-    "motivo_terminacao": "resposta_final",
-    "resposta": "Agendamento agd-001 confirmado: Penteado clássico com Bianca no Studio Aurora, por R$ 120.00."
+  "executado_em": "2026-10-04T23:34:59.893437+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "Agendamento agd-001 confirmado: Penteado clássico com Bianca no Studio Aurora, por R$ 120.00.",
+    "fontes": [
+      "API mock: catálogo de opções"
+    ],
+    "suficiente": true
   },
-  "trajetoria": [
+  "eventos": [
     {
-      "tipo": "modelo",
-      "passo": 1,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [
-        {
-          "id": "mock-consultar_historico",
-          "name": "consultar_historico",
-          "arguments": {}
-        }
-      ],
-      "resposta": null,
-      "tokens_entrada": 120,
-      "tokens_saida": 12
+      "tipo": "entrada_validada",
+      "texto": "Quero um penteado clássico para casamento no Centro até R$ 150. Confirmo o agendamento da melhor opção encontrada."
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
     },
     {
       "tipo": "ferramenta",
-      "passo": 1,
       "ferramenta": "consultar_historico",
-      "argumentos": {},
       "resultado": {
         "ok": true,
         "cliente": {
@@ -53,37 +46,31 @@
             }
           ]
         }
-      },
-      "erro": false
+      }
     },
     {
-      "tipo": "modelo",
-      "passo": 2,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [
-        {
-          "id": "mock-buscar_opcoes",
-          "name": "buscar_opcoes",
-          "arguments": {
-            "servico": "penteado",
-            "bairro": "Centro",
-            "orcamento_max": 150.0
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-001",
+          "texto": "Quero um penteado clássico para casamento no Centro até R$ 150. Confirmo o agendamento da melhor opção encontrada.",
+          "criado_em": "2026-10-04T22:59:53.274599+00:00"
+        },
+        "preferencias": {
+          "estilo": {
+            "valor": "moderno",
+            "atualizado_em": "2026-10-04T23:30:49.248600+00:00"
           }
         }
-      ],
-      "resposta": null,
-      "tokens_entrada": 120,
-      "tokens_saida": 16
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
     },
     {
       "tipo": "ferramenta",
-      "passo": 2,
       "ferramenta": "buscar_opcoes",
-      "argumentos": {
-        "servico": "penteado",
-        "bairro": "Centro",
-        "orcamento_max": 150.0
-      },
       "resultado": {
         "ok": true,
         "opcoes": [
@@ -110,42 +97,56 @@
               "quente",
               "ameno"
             ]
+          },
+          {
+            "opcaoId": "opc-005",
+            "idUnidade": 105,
+            "idServico": 205,
+            "idFuncionario": 305,
+            "salao": "Ateliê Brisa",
+            "bairro": "Centro",
+            "servico": "Penteado elegante",
+            "profissional": "Lívia",
+            "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+            "preco": 135.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "elegante",
+              "clássico"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
           }
         ]
-      },
-      "erro": false
+      }
     },
     {
-      "tipo": "modelo",
-      "passo": 3,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [
-        {
-          "id": "mock-confirmar_agendamento",
-          "name": "confirmar_agendamento",
-          "arguments": {
-            "opcao_id": "opc-001"
-          }
-        }
-      ],
-      "resposta": null,
-      "tokens_entrada": 120,
-      "tokens_saida": 12
+      "tipo": "roteamento",
+      "proxima_acao": "preparar_aprovacao"
+    },
+    {
+      "tipo": "aprovacao_humana",
+      "decisao": "aprovar",
+      "motivo": "",
+      "opcao_id": "opc-001",
+      "expira_em": "2026-10-04T23:49:59.847741+00:00"
     },
     {
       "tipo": "ferramenta",
-      "passo": 3,
       "ferramenta": "confirmar_agendamento",
-      "argumentos": {
-        "opcao_id": "opc-001"
-      },
+      "chave_idempotencia": "e93de28dfb3671a1ecceee6f4a32a342cc9c2758cc0ee7f4a89ffb1d1480a54a",
       "resultado": {
         "ok": true,
         "agendamento": {
           "idAgendamento": "agd-001",
           "clienteId": "cliente-001",
           "status": "CONFIRMADO",
-          "criadoEm": "2026-09-20T22:16:51.342987+00:00",
+          "criadoEm": "2026-10-04T23:34:59.878786+00:00",
           "opcao": {
             "opcaoId": "opc-001",
             "idUnidade": 101,
@@ -171,26 +172,76 @@
             ]
           }
         },
-        "mensagem": "Agendamento agd-001 confirmado: Penteado clássico com Bianca no Studio Aurora, por R$ 120.00."
-      },
-      "erro": false
+        "mensagem": "Agendamento agd-001 confirmado: Penteado clássico com Bianca no Studio Aurora, por R$ 120.00.",
+        "ja_existia": false
+      }
     },
     {
-      "tipo": "modelo",
-      "passo": 4,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [],
-      "resposta": "Agendamento agd-001 confirmado: Penteado clássico com Bianca no Studio Aurora, por R$ 120.00.",
-      "tokens_entrada": 180,
-      "tokens_saida": 23
-    },
-    {
-      "tipo": "terminacao",
-      "motivo": "resposta_final",
-      "passos": 4,
-      "tokens_total": 603,
-      "custo_usd": 0.0
+      "tipo": "fim",
+      "motivo": "agendamento_confirmado"
     }
   ],
-  "caso": "caso simples com escrita confirmada"
+  "estado_final": {
+    "agendamento": {
+      "idAgendamento": "agd-001",
+      "clienteId": "cliente-001",
+      "status": "CONFIRMADO",
+      "criadoEm": "2026-10-04T23:34:59.878786+00:00",
+      "opcao": {
+        "opcaoId": "opc-001",
+        "idUnidade": 101,
+        "idServico": 201,
+        "idFuncionario": 301,
+        "salao": "Studio Aurora",
+        "bairro": "Centro",
+        "servico": "Penteado clássico",
+        "profissional": "Bianca",
+        "dataHoraInicio": "2027-11-20T15:00:00-03:00",
+        "preco": 120.0,
+        "ocasioes": [
+          "casamento",
+          "formatura"
+        ],
+        "estilos": [
+          "clássico",
+          "elegante"
+        ],
+        "clima": [
+          "quente",
+          "ameno"
+        ]
+      }
+    },
+    "motivo_terminacao": "agendamento_confirmado",
+    "passos": 6
+  },
+  "pausa_humana": {
+    "acao": "criar_agendamento",
+    "opcao_id": "opc-001",
+    "servico": "Penteado clássico",
+    "profissional": "Bianca",
+    "horario": "2027-11-20T15:00:00-03:00",
+    "preco": 120.0,
+    "opcoes_consultadas": [
+      "opc-001",
+      "opc-005"
+    ],
+    "alternativas_consultadas": [
+      {
+        "opcao_id": "opc-001",
+        "servico": "Penteado clássico",
+        "profissional": "Bianca",
+        "horario": "2027-11-20T15:00:00-03:00",
+        "preco": 120.0
+      },
+      {
+        "opcao_id": "opc-005",
+        "servico": "Penteado elegante",
+        "profissional": "Lívia",
+        "horario": "2027-11-20T16:00:00-03:00",
+        "preco": 135.0
+      }
+    ],
+    "expira_em": "2026-10-04T23:49:59.847741+00:00"
+  }
 }

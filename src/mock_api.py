@@ -24,6 +24,7 @@ class MockStore:
     def __init__(self, catalog_path: Path = CATALOG_PATH) -> None:
         self.catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
         self.agendamentos: list[dict[str, Any]] = []
+        self.chaves_idempotencia: dict[str, dict[str, Any]] = {}
 
     def historico(self, cliente_id: str) -> dict[str, Any] | None:
         return self.catalog["clientes"].get(cliente_id)
@@ -46,6 +47,9 @@ class MockStore:
         ]
 
     def agendar(self, cliente_id: str, payload: dict[str, Any]) -> dict[str, Any] | None:
+        chave = payload.get("chaveIdempotencia")
+        if chave and chave in self.chaves_idempotencia:
+            return {**self.chaves_idempotencia[chave], "ja_existia": True}
         opcao = next(
             (
                 item
@@ -69,6 +73,8 @@ class MockStore:
             "opcao": opcao,
         }
         self.agendamentos.append(agendamento)
+        if chave:
+            self.chaves_idempotencia[chave] = agendamento
         return agendamento
 
 
@@ -140,13 +146,14 @@ class MockApiHandler(BaseHTTPRequestHandler):
             return
         opcao = agendamento["opcao"]
         self._json(
-            HTTPStatus.CREATED,
+            HTTPStatus.OK if agendamento.get("ja_existia") else HTTPStatus.CREATED,
             {
                 "agendamento": agendamento,
                 "mensagem": (
                     f'Agendamento {agendamento["idAgendamento"]} confirmado: {opcao["servico"]} '
                     f'com {opcao["profissional"]} no {opcao["salao"]}, por R$ {opcao["preco"]:.2f}.'
                 ),
+                "ja_existia": bool(agendamento.get("ja_existia")),
             },
         )
 
@@ -191,4 +198,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

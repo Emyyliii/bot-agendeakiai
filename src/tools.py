@@ -16,7 +16,7 @@ from urllib import error, parse, request
 class ApiTools:
     base_url: str
     token: str
-    cliente_id: str
+    cliente_id: str = ""
     timeout_seconds: float = 3.0
 
     def _request(
@@ -24,6 +24,7 @@ class ApiTools:
         method: str,
         path: str,
         payload: dict[str, Any] | None = None,
+        cliente_id: str | None = None,
     ) -> dict[str, Any]:
         body = json.dumps(payload).encode("utf-8") if payload is not None else None
         requisicao = request.Request(
@@ -34,7 +35,7 @@ class ApiTools:
                 "Accept": "application/json",
                 "Authorization": f"Bearer {self.token}",
                 "Content-Type": "application/json",
-                "X-Mock-Cliente-Id": self.cliente_id,
+                "X-Mock-Cliente-Id": cliente_id or self.cliente_id,
             },
         )
         try:
@@ -74,22 +75,23 @@ class ApiTools:
             "como_continuar": como_continuar or "Ajuste os argumentos ou prossiga sem este dado.",
         }
 
-    def consultar_historico(self) -> dict[str, Any]:
-        return self._request("GET", "/api/clientes/agendamentos/historico")
+    def consultar_historico(self, cliente_id: str | None = None) -> dict[str, Any]:
+        return self._request("GET", "/api/clientes/agendamentos/historico", cliente_id=cliente_id)
 
     def buscar_opcoes(
         self,
         servico: str = "",
         bairro: str = "",
         orcamento_max: float | None = None,
+        cliente_id: str | None = None,
     ) -> dict[str, Any]:
         filtros = {"servico": servico, "bairro": bairro}
         if orcamento_max is not None:
             filtros["orcamentoMax"] = str(orcamento_max)
         consulta = parse.urlencode(filtros)
-        return self._request("GET", f"/api/clientes/opcoes?{consulta}")
+        return self._request("GET", f"/api/clientes/opcoes?{consulta}", cliente_id=cliente_id)
 
-    def confirmar_agendamento(self, opcao: dict[str, Any]) -> dict[str, Any]:
+    def confirmar_agendamento(self, opcao: dict[str, Any], chave_idempotencia: str | None = None, cliente_id: str | None = None) -> dict[str, Any]:
         # O payload segue os campos usados hoje por POST /api/clientes/agendamentos
         # no monorepo. O opcaoId fica apenas para rastreabilidade do mock.
         payload = {
@@ -99,5 +101,6 @@ class ApiTools:
             "idFuncionario": opcao["idFuncionario"],
             "dataHoraInicio": opcao["dataHoraInicio"],
         }
-        return self._request("POST", "/api/clientes/agendamentos", payload)
-
+        if chave_idempotencia:
+            payload["chaveIdempotencia"] = chave_idempotencia
+        return self._request("POST", "/api/clientes/agendamentos", payload, cliente_id=cliente_id)

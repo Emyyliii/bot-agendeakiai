@@ -41,6 +41,12 @@
       "salao": "Espaço Íris", "bairro": "Vila Mariana", "servico": "Maquiagem para festa",
       "profissional": "Elisa", "dataHoraInicio": "2027-11-21T19:00:00-03:00", "preco": 180.0,
       "ocasioes": ["festa", "formatura"], "estilos": ["marcante", "moderno"], "clima": ["ameno"]
+    },
+    {
+      "opcaoId": "opc-005", "idUnidade": 105, "idServico": 205, "idFuncionario": 305,
+      "salao": "Ateliê Brisa", "bairro": "Centro", "servico": "Penteado elegante",
+      "profissional": "Lívia", "dataHoraInicio": "2027-11-20T16:00:00-03:00", "preco": 135.0,
+      "ocasioes": ["casamento", "formatura"], "estilos": ["elegante", "clássico"], "clima": ["quente", "ameno"]
     }
   ]
 }

@@ -1,0 +1,76 @@
+{
+  "caso": "entrada fora do escopo",
+  "entrada": {
+    "texto": "Como preparo uma planilha de orçamento doméstico?",
+    "cliente_id": "cliente-002",
+    "conversa_id": "demo-09-fora-escopo-1791156900236"
+  },
+  "executado_em": "2026-10-04T23:35:00.289100+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "Posso ajudar a encontrar e agendar serviços de beleza. Não realizei nenhum agendamento.",
+    "fontes": [],
+    "suficiente": false
+  },
+  "eventos": [
+    {
+      "tipo": "entrada_validada",
+      "texto": "Como preparo uma planilha de orçamento doméstico?"
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "consultar_historico",
+      "resultado": {
+        "ok": true,
+        "cliente": {
+          "nome": "Rafael",
+          "preferencias": {
+            "estilo": "discreto",
+            "bairro": "Moema",
+            "periodo": "manha"
+          },
+          "agendamentos": []
+        }
+      }
+    },
+    {
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-002",
+          "texto": "Como preparo uma planilha de orçamento doméstico?",
+          "criado_em": "2026-10-04T22:45:56.626328+00:00"
+        },
+        "preferencias": {}
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
+    },
+    {
+      "tipo": "recusa",
+      "motivo": "fora_do_escopo"
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "finalizar"
+    },
+    {
+      "tipo": "fim",
+      "motivo": "resposta_final"
+    }
+  ],
+  "estado_final": {
+    "agendamento": {},
+    "motivo_terminacao": "resposta_final",
+    "passos": 3
+  }
+}

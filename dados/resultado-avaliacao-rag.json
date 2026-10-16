@@ -1,0 +1,107 @@
+[
+  {
+    "pergunta": "Com quantas horas de antecedência posso cancelar?",
+    "esperado": "Cancelamento",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Cancelamento\nO cancelamento de um agendamento exige antecedência mínima de 48 horas. Esta é a regra simulada vigente do AgendeAkiAI.",
+      "titulo": "Cancelamento",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "A regra de cancelamento é de 24 horas?",
+    "esperado": "Cancelamento",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Cancelamento\nO cancelamento de um agendamento exige antecedência mínima de 48 horas. Esta é a regra simulada vigente do AgendeAkiAI.",
+      "titulo": "Cancelamento",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "A remarcação tem custo?",
+    "esperado": "Remarcação",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Remarcação\nA remarcação não tem custo nesta POC. Regra simulada para avaliação, sem pesquisa com clientes reais.",
+      "titulo": "Remarcação",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "O que acontece se o salão cancelar?",
+    "esperado": "Exceção por cancelamento do salão",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Exceção por cancelamento do salão\nRegra simulada para avaliação: se o salão cancelar, o cliente pode escolher remarcação sem custo ou solicitar reembolso integral.",
+      "titulo": "Exceção por cancelamento do salão",
+      "pontos": "2"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "Fiquei doente no dia, posso remarcar?",
+    "esperado": "Exceção por doença no dia",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Exceção por doença no dia\nRegra simulada para avaliação: em caso de doença no dia, é permitida uma remarcação sem custo mediante contato com a operação.",
+      "titulo": "Exceção por doença no dia",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "Qual é a regra para atraso?",
+    "esperado": "recusa/sem suporte suficiente",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Cancelamento\nO cancelamento de um agendamento exige antecedência mínima de 48 horas. Esta é a regra simulada vigente do AgendeAkiAI.",
+      "titulo": "Cancelamento",
+      "pontos": "1"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "O salão devolve o valor se cancelar?",
+    "esperado": "Exceção por cancelamento do salão",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Exceção por cancelamento do salão\nRegra simulada para avaliação: se o salão cancelar, o cliente pode escolher remarcação sem custo ou solicitar reembolso integral.",
+      "titulo": "Exceção por cancelamento do salão",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "Posso remarcar sem pagar uma taxa?",
+    "esperado": "Remarcação",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Remarcação\nA remarcação não tem custo nesta POC. Regra simulada para avaliação, sem pesquisa com clientes reais.",
+      "titulo": "Remarcação",
+      "pontos": "3"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "Quantas horas antes devo cancelar a reserva?",
+    "esperado": "Cancelamento",
+    "primeiro_trecho": {
+      "fonte": "dados/corpus/regras-vigentes.md",
+      "trecho": "## Cancelamento\nO cancelamento de um agendamento exige antecedência mínima de 48 horas. Esta é a regra simulada vigente do AgendeAkiAI.",
+      "titulo": "Cancelamento",
+      "pontos": "2"
+    },
+    "passou": true
+  },
+  {
+    "pergunta": "Qual produto é seguro para minha alergia?",
+    "esperado": "recusa/sem suporte suficiente",
+    "primeiro_trecho": null,
+    "passou": true
+  }
+]

@@ -1,0 +1,310 @@
+{
+  "caso": "aprovação editada e repetida",
+  "entrada": {
+    "texto": "Quero penteado clássico no Centro até R$ 150. Confirmo o agendamento.",
+    "cliente_id": "cliente-002",
+    "conversa_id": "demo-06-aprovacao-editada-1791156900031"
+  },
+  "executado_em": "2026-10-04T23:35:00.079953+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "Agendamento agd-002 confirmado: Penteado elegante com Lívia no Ateliê Brisa, por R$ 135.00.",
+    "fontes": [
+      "API mock: catálogo de opções"
+    ],
+    "suficiente": true
+  },
+  "eventos": [
+    {
+      "tipo": "entrada_validada",
+      "texto": "Quero penteado clássico no Centro até R$ 150. Confirmo o agendamento."
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "consultar_historico",
+      "resultado": {
+        "ok": true,
+        "cliente": {
+          "nome": "Rafael",
+          "preferencias": {
+            "estilo": "discreto",
+            "bairro": "Moema",
+            "periodo": "manha"
+          },
+          "agendamentos": []
+        }
+      }
+    },
+    {
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-002",
+          "texto": "Quero penteado clássico no Centro até R$ 150. Confirmo o agendamento.",
+          "criado_em": "2026-10-04T22:59:53.570671+00:00"
+        },
+        "preferencias": {}
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "buscar_opcoes",
+      "resultado": {
+        "ok": true,
+        "opcoes": [
+          {
+            "opcaoId": "opc-001",
+            "idUnidade": 101,
+            "idServico": 201,
+            "idFuncionario": 301,
+            "salao": "Studio Aurora",
+            "bairro": "Centro",
+            "servico": "Penteado clássico",
+            "profissional": "Bianca",
+            "dataHoraInicio": "2027-11-20T15:00:00-03:00",
+            "preco": 120.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "clássico",
+              "elegante"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
+          },
+          {
+            "opcaoId": "opc-005",
+            "idUnidade": 105,
+            "idServico": 205,
+            "idFuncionario": 305,
+            "salao": "Ateliê Brisa",
+            "bairro": "Centro",
+            "servico": "Penteado elegante",
+            "profissional": "Lívia",
+            "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+            "preco": 135.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "elegante",
+              "clássico"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "preparar_aprovacao"
+    },
+    {
+      "tipo": "aprovacao_humana",
+      "decisao": "editar",
+      "motivo": "",
+      "opcao_id": "opc-005",
+      "expira_em": "2026-10-04T23:50:00.043638+00:00"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "confirmar_agendamento",
+      "chave_idempotencia": "1b5608ccb56f6a49acb1c40687bfc8036c16b1f8b74dc1224c6b9f848ef6e80d",
+      "resultado": {
+        "ok": true,
+        "agendamento": {
+          "idAgendamento": "agd-002",
+          "clienteId": "cliente-002",
+          "status": "CONFIRMADO",
+          "criadoEm": "2026-10-04T23:35:00.064977+00:00",
+          "opcao": {
+            "opcaoId": "opc-005",
+            "idUnidade": 105,
+            "idServico": 205,
+            "idFuncionario": 305,
+            "salao": "Ateliê Brisa",
+            "bairro": "Centro",
+            "servico": "Penteado elegante",
+            "profissional": "Lívia",
+            "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+            "preco": 135.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "elegante",
+              "clássico"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
+          }
+        },
+        "mensagem": "Agendamento agd-002 confirmado: Penteado elegante com Lívia no Ateliê Brisa, por R$ 135.00.",
+        "ja_existia": false
+      }
+    },
+    {
+      "tipo": "fim",
+      "motivo": "agendamento_confirmado"
+    }
+  ],
+  "estado_final": {
+    "agendamento": {
+      "idAgendamento": "agd-002",
+      "clienteId": "cliente-002",
+      "status": "CONFIRMADO",
+      "criadoEm": "2026-10-04T23:35:00.064977+00:00",
+      "opcao": {
+        "opcaoId": "opc-005",
+        "idUnidade": 105,
+        "idServico": 205,
+        "idFuncionario": 305,
+        "salao": "Ateliê Brisa",
+        "bairro": "Centro",
+        "servico": "Penteado elegante",
+        "profissional": "Lívia",
+        "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+        "preco": 135.0,
+        "ocasioes": [
+          "casamento",
+          "formatura"
+        ],
+        "estilos": [
+          "elegante",
+          "clássico"
+        ],
+        "clima": [
+          "quente",
+          "ameno"
+        ]
+      }
+    },
+    "motivo_terminacao": "agendamento_confirmado",
+    "passos": 6
+  },
+  "pausa_humana": {
+    "acao": "criar_agendamento",
+    "opcao_id": "opc-001",
+    "servico": "Penteado clássico",
+    "profissional": "Bianca",
+    "horario": "2027-11-20T15:00:00-03:00",
+    "preco": 120.0,
+    "opcoes_consultadas": [
+      "opc-001",
+      "opc-005"
+    ],
+    "alternativas_consultadas": [
+      {
+        "opcao_id": "opc-001",
+        "servico": "Penteado clássico",
+        "profissional": "Bianca",
+        "horario": "2027-11-20T15:00:00-03:00",
+        "preco": 120.0
+      },
+      {
+        "opcao_id": "opc-005",
+        "servico": "Penteado elegante",
+        "profissional": "Lívia",
+        "horario": "2027-11-20T16:00:00-03:00",
+        "preco": 135.0
+      }
+    ],
+    "expira_em": "2026-10-04T23:50:00.043638+00:00"
+  },
+  "repeticao_idempotente": {
+    "primeira_escrita": {
+      "ok": true,
+      "agendamento": {
+        "idAgendamento": "agd-002",
+        "clienteId": "cliente-002",
+        "status": "CONFIRMADO",
+        "criadoEm": "2026-10-04T23:35:00.064977+00:00",
+        "opcao": {
+          "opcaoId": "opc-005",
+          "idUnidade": 105,
+          "idServico": 205,
+          "idFuncionario": 305,
+          "salao": "Ateliê Brisa",
+          "bairro": "Centro",
+          "servico": "Penteado elegante",
+          "profissional": "Lívia",
+          "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+          "preco": 135.0,
+          "ocasioes": [
+            "casamento",
+            "formatura"
+          ],
+          "estilos": [
+            "elegante",
+            "clássico"
+          ],
+          "clima": [
+            "quente",
+            "ameno"
+          ]
+        }
+      },
+      "mensagem": "Agendamento agd-002 confirmado: Penteado elegante com Lívia no Ateliê Brisa, por R$ 135.00.",
+      "ja_existia": false
+    },
+    "segunda_chamada": {
+      "ok": true,
+      "agendamento": {
+        "idAgendamento": "agd-002",
+        "clienteId": "cliente-002",
+        "status": "CONFIRMADO",
+        "criadoEm": "2026-10-04T23:35:00.064977+00:00",
+        "opcao": {
+          "opcaoId": "opc-005",
+          "idUnidade": 105,
+          "idServico": 205,
+          "idFuncionario": 305,
+          "salao": "Ateliê Brisa",
+          "bairro": "Centro",
+          "servico": "Penteado elegante",
+          "profissional": "Lívia",
+          "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+          "preco": 135.0,
+          "ocasioes": [
+            "casamento",
+            "formatura"
+          ],
+          "estilos": [
+            "elegante",
+            "clássico"
+          ],
+          "clima": [
+            "quente",
+            "ameno"
+          ]
+        },
+        "ja_existia": true
+      },
+      "mensagem": "Agendamento agd-002 confirmado: Penteado elegante com Lívia no Ateliê Brisa, por R$ 135.00.",
+      "ja_existia": true
+    },
+    "agendamentos_unicos": 1
+  }
+}

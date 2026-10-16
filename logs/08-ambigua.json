@@ -1,0 +1,139 @@
+{
+  "caso": "entrada ambígua",
+  "entrada": {
+    "texto": "Quero maquiagem para formatura até R$ 200.",
+    "cliente_id": "cliente-002",
+    "conversa_id": "demo-08-ambigua-1791156900120"
+  },
+  "executado_em": "2026-10-04T23:35:00.236355+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "Encontrei opções em Centro, Vila Mariana. Qual bairro prefere?",
+    "fontes": [
+      "API mock: catálogo de opções"
+    ],
+    "suficiente": false
+  },
+  "eventos": [
+    {
+      "tipo": "entrada_validada",
+      "texto": "Quero maquiagem para formatura até R$ 200."
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "consultar_historico",
+      "resultado": {
+        "ok": true,
+        "cliente": {
+          "nome": "Rafael",
+          "preferencias": {
+            "estilo": "discreto",
+            "bairro": "Moema",
+            "periodo": "manha"
+          },
+          "agendamentos": []
+        }
+      }
+    },
+    {
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-002",
+          "texto": "Quero maquiagem para formatura até R$ 200.",
+          "criado_em": "2026-10-04T22:59:53.661951+00:00"
+        },
+        "preferencias": {}
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "buscar_opcoes",
+      "resultado": {
+        "ok": true,
+        "opcoes": [
+          {
+            "opcaoId": "opc-002",
+            "idUnidade": 102,
+            "idServico": 202,
+            "idFuncionario": 302,
+            "salao": "Bela Forma",
+            "bairro": "Centro",
+            "servico": "Maquiagem natural",
+            "profissional": "Carla",
+            "dataHoraInicio": "2027-11-20T17:00:00-03:00",
+            "preco": 140.0,
+            "ocasioes": [
+              "casamento",
+              "formatura",
+              "festa"
+            ],
+            "estilos": [
+              "natural",
+              "elegante",
+              "moderno"
+            ],
+            "clima": [
+              "quente"
+            ]
+          },
+          {
+            "opcaoId": "opc-004",
+            "idUnidade": 104,
+            "idServico": 204,
+            "idFuncionario": 304,
+            "salao": "Espaço Íris",
+            "bairro": "Vila Mariana",
+            "servico": "Maquiagem para festa",
+            "profissional": "Elisa",
+            "dataHoraInicio": "2027-11-21T19:00:00-03:00",
+            "preco": 180.0,
+            "ocasioes": [
+              "festa",
+              "formatura"
+            ],
+            "estilos": [
+              "marcante",
+              "moderno"
+            ],
+            "clima": [
+              "ameno"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "entrada_ambigua",
+      "campo": "bairro",
+      "opcoes": [
+        "Centro",
+        "Vila Mariana"
+      ]
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "finalizar"
+    },
+    {
+      "tipo": "fim",
+      "motivo": "resposta_final"
+    }
+  ],
+  "estado_final": {
+    "agendamento": {},
+    "motivo_terminacao": "resposta_final",
+    "passos": 3
+  }
+}

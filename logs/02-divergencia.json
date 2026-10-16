@@ -1,41 +1,34 @@
 {
-  "executado_em": "2026-09-20T22:16:51.347089+00:00",
-  "prompt": "agendeakiai-agente-v1",
-  "modelo": "mock-agendeakiai-v1",
+  "caso": "preferência atual diverge do histórico",
   "entrada": {
+    "texto": "Apesar de eu normalmente escolher algo moderno, hoje quero penteado clássico no Centro até R$ 150.",
     "cliente_id": "cliente-001",
-    "mensagem": "Apesar de eu normalmente escolher algo moderno, hoje quero penteado clássico no Centro até R$ 150.",
-    "confirmacao_explicita": false
+    "conversa_id": "demo-02-divergencia-1791156899893"
   },
-  "estado_final": {
-    "passos": 3,
-    "tokens_entrada": 420,
-    "tokens_saida": 73,
-    "custo_usd": 0.0,
-    "motivo_terminacao": "resposta_final",
-    "resposta": "Sua preferência atual foi priorizada sobre o histórico. Melhor opção: opc-001: Penteado clássico com Bianca no Studio Aurora, Centro, por R$ 120.00. Nenhum agendamento foi realizado."
+  "executado_em": "2026-10-04T23:34:59.926304+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "Sua preferência atual foi priorizada sobre o histórico. Opções: opc-001: Penteado clássico com Bianca, Centro, 2027-11-20T15:00:00-03:00, R$ 120.00; opc-005: Penteado elegante com Lívia, Centro, 2027-11-20T16:00:00-03:00, R$ 135.00. Nenhum agendamento foi realizado.",
+    "fontes": [
+      "API mock: catálogo de opções"
+    ],
+    "suficiente": true
   },
-  "trajetoria": [
+  "eventos": [
     {
-      "tipo": "modelo",
-      "passo": 1,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [
-        {
-          "id": "mock-consultar_historico",
-          "name": "consultar_historico",
-          "arguments": {}
-        }
-      ],
-      "resposta": null,
-      "tokens_entrada": 120,
-      "tokens_saida": 12
+      "tipo": "entrada_validada",
+      "texto": "Apesar de eu normalmente escolher algo moderno, hoje quero penteado clássico no Centro até R$ 150."
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
     },
     {
       "tipo": "ferramenta",
-      "passo": 1,
       "ferramenta": "consultar_historico",
-      "argumentos": {},
       "resultado": {
         "ok": true,
         "cliente": {
@@ -53,37 +46,31 @@
             }
           ]
         }
-      },
-      "erro": false
+      }
     },
     {
-      "tipo": "modelo",
-      "passo": 2,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [
-        {
-          "id": "mock-buscar_opcoes",
-          "name": "buscar_opcoes",
-          "arguments": {
-            "servico": "penteado",
-            "bairro": "Centro",
-            "orcamento_max": 150.0
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-001",
+          "texto": "Apesar de eu normalmente escolher algo moderno, hoje quero penteado clássico no Centro até R$ 150.",
+          "criado_em": "2026-10-04T22:45:56.419999+00:00"
+        },
+        "preferencias": {
+          "estilo": {
+            "valor": "moderno",
+            "atualizado_em": "2026-10-04T23:30:49.248600+00:00"
           }
         }
-      ],
-      "resposta": null,
-      "tokens_entrada": 120,
-      "tokens_saida": 16
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
     },
     {
       "tipo": "ferramenta",
-      "passo": 2,
       "ferramenta": "buscar_opcoes",
-      "argumentos": {
-        "servico": "penteado",
-        "bairro": "Centro",
-        "orcamento_max": 150.0
-      },
       "resultado": {
         "ok": true,
         "opcoes": [
@@ -110,27 +97,46 @@
               "quente",
               "ameno"
             ]
+          },
+          {
+            "opcaoId": "opc-005",
+            "idUnidade": 105,
+            "idServico": 205,
+            "idFuncionario": 305,
+            "salao": "Ateliê Brisa",
+            "bairro": "Centro",
+            "servico": "Penteado elegante",
+            "profissional": "Lívia",
+            "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+            "preco": 135.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "elegante",
+              "clássico"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
           }
         ]
-      },
-      "erro": false
+      }
     },
     {
-      "tipo": "modelo",
-      "passo": 3,
-      "modelo": "mock-agendeakiai-v1",
-      "tool_calls": [],
-      "resposta": "Sua preferência atual foi priorizada sobre o histórico. Melhor opção: opc-001: Penteado clássico com Bianca no Studio Aurora, Centro, por R$ 120.00. Nenhum agendamento foi realizado.",
-      "tokens_entrada": 180,
-      "tokens_saida": 45
+      "tipo": "roteamento",
+      "proxima_acao": "finalizar"
     },
     {
-      "tipo": "terminacao",
-      "motivo": "resposta_final",
-      "passos": 3,
-      "tokens_total": 493,
-      "custo_usd": 0.0
+      "tipo": "fim",
+      "motivo": "resposta_final"
     }
   ],
-  "caso": "preferência atual diverge do histórico"
+  "estado_final": {
+    "agendamento": {},
+    "motivo_terminacao": "resposta_final",
+    "passos": 3
+  }
 }

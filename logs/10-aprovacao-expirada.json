@@ -1,0 +1,167 @@
+{
+  "caso": "aprovação expirada",
+  "entrada": {
+    "texto": "Quero agendar penteado clássico no Centro até R$ 150. Confirmo.",
+    "cliente_id": "cliente-002",
+    "conversa_id": "demo-10-aprovacao-expirada-1791156900289"
+  },
+  "executado_em": "2026-10-04T23:35:00.349652+00:00",
+  "commit_base": "abd83eaee75c70a3ec21c1cec259084fd29860b4",
+  "arvore_de_trabalho_alterada": true,
+  "impressao_do_codigo": "3b7c7b9310f994f28dc96379bbe912afa46f7f7bfa06dbd2fedf3e9021d61409",
+  "saida_validada": {
+    "resultado": "A aprovação foi rejeitada ou expirou. Nenhum agendamento foi realizado.",
+    "fontes": [
+      "API mock: catálogo de opções"
+    ],
+    "suficiente": true
+  },
+  "eventos": [
+    {
+      "tipo": "entrada_validada",
+      "texto": "Quero agendar penteado clássico no Centro até R$ 150. Confirmo."
+    },
+    {
+      "tipo": "prompt_carregado",
+      "id": "agendeakiai-agente-v2",
+      "sha256": "afd641ba0b182dd346f1daede2e2f754a2d121a779f2ac6e347575d421a5dea2"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "consultar_historico",
+      "resultado": {
+        "ok": true,
+        "cliente": {
+          "nome": "Rafael",
+          "preferencias": {
+            "estilo": "discreto",
+            "bairro": "Moema",
+            "periodo": "manha"
+          },
+          "agendamentos": []
+        }
+      }
+    },
+    {
+      "tipo": "memoria",
+      "resultado": {
+        "episodio": {
+          "cliente_id": "cliente-002",
+          "texto": "Quero agendar penteado clássico no Centro até R$ 150. Confirmo.",
+          "criado_em": "2026-10-04T22:59:53.763933+00:00"
+        },
+        "preferencias": {}
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "consultar_fontes"
+    },
+    {
+      "tipo": "ferramenta",
+      "ferramenta": "buscar_opcoes",
+      "resultado": {
+        "ok": true,
+        "opcoes": [
+          {
+            "opcaoId": "opc-001",
+            "idUnidade": 101,
+            "idServico": 201,
+            "idFuncionario": 301,
+            "salao": "Studio Aurora",
+            "bairro": "Centro",
+            "servico": "Penteado clássico",
+            "profissional": "Bianca",
+            "dataHoraInicio": "2027-11-20T15:00:00-03:00",
+            "preco": 120.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "clássico",
+              "elegante"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
+          },
+          {
+            "opcaoId": "opc-005",
+            "idUnidade": 105,
+            "idServico": 205,
+            "idFuncionario": 305,
+            "salao": "Ateliê Brisa",
+            "bairro": "Centro",
+            "servico": "Penteado elegante",
+            "profissional": "Lívia",
+            "dataHoraInicio": "2027-11-20T16:00:00-03:00",
+            "preco": 135.0,
+            "ocasioes": [
+              "casamento",
+              "formatura"
+            ],
+            "estilos": [
+              "elegante",
+              "clássico"
+            ],
+            "clima": [
+              "quente",
+              "ameno"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "roteamento",
+      "proxima_acao": "preparar_aprovacao"
+    },
+    {
+      "tipo": "aprovacao_humana",
+      "decisao": "rejeitar",
+      "motivo": "aprovacao_expirada",
+      "opcao_id": "opc-001",
+      "expira_em": "2000-01-01T00:00:00+00:00"
+    },
+    {
+      "tipo": "fim",
+      "motivo": "aprovacao_expirada"
+    }
+  ],
+  "estado_final": {
+    "agendamento": {},
+    "motivo_terminacao": "aprovacao_expirada",
+    "passos": 5
+  },
+  "pausa_humana": {
+    "acao": "criar_agendamento",
+    "opcao_id": "opc-001",
+    "servico": "Penteado clássico",
+    "profissional": "Bianca",
+    "horario": "2027-11-20T15:00:00-03:00",
+    "preco": 120.0,
+    "opcoes_consultadas": [
+      "opc-001",
+      "opc-005"
+    ],
+    "alternativas_consultadas": [
+      {
+        "opcao_id": "opc-001",
+        "servico": "Penteado clássico",
+        "profissional": "Bianca",
+        "horario": "2027-11-20T15:00:00-03:00",
+        "preco": 120.0
+      },
+      {
+        "opcao_id": "opc-005",
+        "servico": "Penteado elegante",
+        "profissional": "Lívia",
+        "horario": "2027-11-20T16:00:00-03:00",
+        "preco": 135.0
+      }
+    ],
+    "expira_em": "2000-01-01T00:00:00+00:00"
+  }
+}
